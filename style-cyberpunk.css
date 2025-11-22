@@ -198,7 +198,7 @@ window#waybar {
   background: #ff0000;
   color: #000000;
   box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-  animation: blink 1s linear infinite;
+  font-weight: bold;
 }
 
 #battery.warning {
@@ -214,11 +214,6 @@ window#waybar {
 #battery.charging {
   background: #00ffff;
   color: #000000;
-}
-
-@keyframes blink {
-  0%, 50% { opacity: 1.0; }
-  51%, 100% { opacity: 0.5; }
 }
 
 /* Idle inhibitor */
