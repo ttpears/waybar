@@ -4,16 +4,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Waybar configuration directory for a Sway window manager setup. Waybar is a highly customizable status bar for Wayland compositors. The configuration supports multi-monitor setups and includes multiple theme options.
+This is a Waybar configuration directory for a Sway window manager setup. Waybar is a highly customizable status bar for Wayland compositors. The configuration supports multi-monitor setups and includes a template-based multi-theme system.
 
 ## Architecture
 
 ### Theme System
 
-The repository uses a symlink-based theme switching system:
-- `style.css` is a symlink pointing to one of the theme files
-- Theme files: `style-nordic.css`, `style-synthwave.css`, `style-tokyonight.css`, `style-catppuccin.css`, `style-cyberpunk.css`
-- `switch-theme.sh` script handles theme switching and automatically reloads Waybar
+The repository uses a **template + compilation** approach to avoid CSS duplication:
+
+**Source Files:**
+- `template.css` - Single source of truth with placeholders like `{{bg-bar}}`
+- `themes/*.conf` - Simple key=value config files (one per theme, ~80 lines each)
+- `compile-themes.sh` - Bash script that generates final CSS files via find/replace
+
+**Generated Files (not in git):**
+- `style-nordic.css`, `style-synthwave.css`, etc. - Compiled theme files
+- `style.css` - Symlink pointing to active theme
+
+**Workflow:**
+1. Edit `themes/*.conf` to change colors
+2. Run `./compile-themes.sh` to regenerate CSS files
+3. Use `./switch-theme.sh <theme>` to switch themes and reload Waybar
+
+**Why this approach?**
+GTK CSS (used by Waybar) doesn't support standard CSS variables (`--variable-name`), so we use compile-time substitution instead. This reduces code from 1500+ lines (5 themes × 300 lines) to ~700 lines total (1 template + 5 small configs).
 
 ### Configuration Structure
 

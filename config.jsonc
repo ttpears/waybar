@@ -11,7 +11,6 @@
   "modules-left": [
     "sway/workspaces",
     "sway/mode",
-    "sway/scratchpad",
     "custom/sep",
     "sway/window"
   ],
@@ -22,20 +21,14 @@
     "cpu",
     "memory",
     "temperature",
-    "custom/sep",
     "network",
     "bluetooth",
-    "custom/sep",
     "pulseaudio",
-    "custom/sep",
     "backlight",
-    "custom/sep",
     "battery",
-    "custom/sep",
     "idle_inhibitor",
     "clock",
     "tray",
-    "custom/sep",
     "custom/keepass",
     "custom/power"
   ],
@@ -48,13 +41,6 @@
   "sway/mode": {
     "format": "<span style=\"italic\">  {}</span>",
     "tooltip": false
-  },
-  "sway/scratchpad": {
-    "format": "{icon} {count}",
-    "show-empty": false,
-    "format-icons": ["", ""],
-    "tooltip": true,
-    "tooltip-format": "{app}: {title}"
   },
   "sway/window": {
     "format": "{}",
@@ -88,7 +74,7 @@
     }
   },
   "idle_inhibitor": {
-    "format": "{icon}",
+    "format": "⏰ {icon}",
     "format-icons": {
       "activated": "",
       "deactivated": ""
@@ -127,7 +113,7 @@
     }
   },
   "cpu": {
-    "format": " {usage}%",
+    "format": "📊  {usage}%",
     "tooltip": true,
     "interval": 2,
     "states": {
@@ -155,10 +141,10 @@
     "on-click": "wezterm start --always-new-process sensors"
   },
   "network": {
-    "format-wifi": " {signalStrength}%",
-    "format-ethernet": "",
-    "format-linked": " (No IP)",
-    "format-disconnected": "⚠",
+    "format-wifi": "🌐  {signalStrength}%",
+    "format-ethernet": "🌐 ",
+    "format-linked": "🌐  (No IP)",
+    "format-disconnected": "🌐 ⚠",
     "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}\nStrength: {signalStrength}%\nFrequency: {frequency}MHz",
     "tooltip-format-wifi": " {essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}\nFrequency: {frequency}MHz",
     "tooltip-format-ethernet": " {ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}",
@@ -178,8 +164,8 @@
     "on-click": "blueman-manager"
   },
   "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": " muted",
+    "format": "🔊 {icon} {volume}%",
+    "format-muted": "🔊  muted",
     "format-icons": {
       "headphone": "",
       "hands-free": "",
@@ -197,7 +183,7 @@
   },
   "backlight": {
     "device": "intel_backlight",
-    "format": "{icon} {percent}%",
+    "format": "💡 {icon} {percent}%",
     "format-icons": ["", "", "", "", "", "", "", "", ""],
     "tooltip": true,
     "tooltip-format": "Brightness: {percent}%",
@@ -213,11 +199,11 @@
       "critical": 15,
       "good": 50
     },
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 󰂄",
-    "format-plugged": "{capacity}% 󰚥",
-    "format-alt": "{time} {icon}",
-    "format-full": "100% 󰁹",
+    "format": "🔋 {capacity}% {icon}",
+    "format-charging": "🔋 {capacity}% 󰂄",
+    "format-plugged": "🔋 {capacity}% 󰚥",
+    "format-alt": "🔋 {time} {icon}",
+    "format-full": "🔋 100% 󰁹",
     "format-icons": [
       "󰁺",
       "󰁻",
@@ -234,17 +220,13 @@
     "on-click": "gnome-power-statistics",
     "max-length": 25
   },
-  "custom/sep": {
-    "format": "|",
-    "tooltip": false
-  },
   "custom/power": {
     "tooltip": false,
     "on-click": "wlogout -p layer-shell &",
     "format": "⏻"
   },
   "custom/keepass": {
-    "format": "󰌾",
+    "format": "⚙️ 󰌾",
     "tooltip-format": "KeePass (Click to toggle)",
     "on-click": "swaymsg '[app_id=\"keepassxc\"] scratchpad show' || swaymsg '[class=\"KeePassXC\"] scratchpad show'"
   }

@@ -1,0 +1,19 @@
+# Generated theme files (compiled from template)
+style-*.css
+
+# Current theme symlink (user-specific)
+style.css
+
+# Waybar log files
+*.log
+
+# Editor files
+*.swp
+*.swo
+*~
+.*.sw?
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

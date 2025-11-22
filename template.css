@@ -1,0 +1,308 @@
+/* WAYBAR THEME TEMPLATE */
+* {
+  font-family: "Iosevka Term Nerd Font", "Noto Sans", sans-serif;
+  font-size: 13px;
+  border: none;
+}
+
+window#waybar {
+  background: {{bg-bar}};
+  color: {{text-primary}};
+  border-radius: 0;
+}
+
+/* Module styling with gaps and borders */
+#workspaces,
+#mode,
+#scratchpad,
+#window,
+#cpu,
+#memory,
+#temperature,
+#network,
+#bluetooth,
+#pulseaudio,
+#backlight,
+#battery,
+#idle_inhibitor,
+#clock,
+#tray,
+#mpris,
+#custom-power,
+#custom-keepass {
+  margin: 4px 6px;
+  padding: 6px 12px;
+  background: {{bg-module}};
+  border-radius: 8px;
+  border: 1px solid {{border-module}};
+  box-shadow: {{shadow-module}};
+}
+
+
+/* Workspaces */
+#workspaces button {
+  color: {{ws-default}};
+  padding: 4px 12px;
+  margin: 2px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+#workspaces button.visible {
+  background: {{ws-visible-bg}};
+  color: {{ws-visible-fg}};
+  font-weight: normal;
+  box-shadow: {{ws-visible-shadow}};
+}
+
+#workspaces button.focused {
+  background: {{ws-focused-bg}};
+  color: {{ws-focused-fg}};
+  font-weight: bold;
+  box-shadow: {{ws-focused-shadow}};
+}
+
+#workspaces button:hover {
+  background: {{ws-hover-bg}};
+  color: {{ws-hover-fg}};
+}
+
+/* Sway mode indicator */
+#mode {
+  background: {{mode-bg}};
+  color: {{mode-fg}};
+  border-color: {{mode-border}};
+  font-weight: bold;
+  box-shadow: {{mode-shadow}};
+}
+
+/* Scratchpad indicator */
+#scratchpad {
+  color: {{scratchpad}};
+  border-color: {{scratchpad-border}};
+}
+
+/* Window title */
+#window {
+  color: {{window}};
+  font-style: italic;
+}
+
+/* CPU */
+#cpu {
+  color: {{cpu}};
+}
+
+#cpu.warning {
+  color: {{color-warning}};
+  background: {{bg-warning}};
+  box-shadow: {{shadow-warning}};
+}
+
+#cpu.critical {
+  color: {{color-critical}};
+  background: {{bg-critical}};
+  font-weight: bold;
+  box-shadow: {{shadow-critical}};
+}
+
+/* Memory */
+#memory {
+  color: {{memory}};
+}
+
+#memory.warning {
+  color: {{color-warning}};
+  background: {{bg-warning}};
+  box-shadow: {{shadow-warning}};
+}
+
+#memory.critical {
+  color: {{color-critical}};
+  background: {{bg-critical}};
+  font-weight: bold;
+  box-shadow: {{shadow-critical}};
+}
+
+/* Temperature */
+#temperature {
+  color: {{temperature}};
+}
+
+#temperature.critical {
+  color: {{color-critical}};
+  background: {{bg-critical}};
+  font-weight: bold;
+  box-shadow: {{shadow-critical}};
+}
+
+/* Network */
+#network {
+  color: {{network}};
+}
+
+#network.disconnected {
+  color: {{color-critical}};
+  background: {{bg-critical}};
+}
+
+#network.linked {
+  color: {{network-linked}};
+}
+
+/* Bluetooth */
+#bluetooth {
+  color: {{bluetooth}};
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+  color: {{color-disabled}};
+}
+
+#bluetooth.connected {
+  color: {{bluetooth-connected}};
+  font-weight: bold;
+}
+
+/* Pulseaudio */
+#pulseaudio {
+  color: {{pulseaudio}};
+}
+
+#pulseaudio.muted {
+  color: {{color-critical}};
+  background: {{bg-critical}};
+}
+
+/* Backlight */
+#backlight {
+  color: {{backlight}};
+}
+
+/* Battery */
+#battery {
+  color: {{battery}};
+}
+
+#battery.critical {
+  background: {{battery-critical-bg}};
+  color: {{battery-critical-fg}};
+  box-shadow: {{battery-critical-shadow}};
+  font-weight: bold;
+}
+
+#battery.warning {
+  background: {{battery-warning-bg}};
+  color: {{battery-warning-fg}};
+}
+
+#battery.good {
+  background: {{battery-good-bg}};
+  color: {{battery-good-fg}};
+}
+
+#battery.charging {
+  background: {{battery-charging-bg}};
+  color: {{battery-charging-fg}};
+}
+
+/* Idle inhibitor */
+#idle_inhibitor {
+  color: {{idle-inhibitor}};
+}
+
+#idle_inhibitor.activated {
+  color: {{idle-activated-fg}};
+  background: {{idle-activated-bg}};
+  border-color: {{idle-activated-border}};
+  box-shadow: {{idle-activated-shadow}};
+}
+
+/* Clock */
+#clock {
+  color: {{clock}};
+  font-weight: bold;
+  text-shadow: {{clock-shadow}};
+}
+
+/* Tray */
+#tray {
+  padding: 6px 10px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: {{tray-attention-bg}};
+  border-color: {{tray-attention-border}};
+  box-shadow: {{tray-attention-shadow}};
+}
+
+/* MPRIS player */
+#mpris {
+  color: {{mpris}};
+}
+
+#mpris.paused {
+  color: {{mpris-paused}};
+}
+
+/* KeePass button */
+#custom-keepass {
+  background: {{keepass-bg}};
+  color: {{keepass-fg}};
+  border-color: {{keepass-border}};
+  font-size: 16px;
+  padding: 6px 14px;
+  font-weight: bold;
+  box-shadow: {{keepass-shadow}};
+}
+
+#custom-keepass:hover {
+  background: {{keepass-hover-bg}};
+  color: {{keepass-hover-fg}};
+  border-color: {{keepass-hover-border}};
+  box-shadow: {{keepass-hover-shadow}};
+  transition: all 0.2s ease;
+}
+
+/* Power button */
+#custom-power {
+  background: {{power-bg}};
+  color: {{power-fg}};
+  border-color: {{power-border}};
+  font-size: 16px;
+  padding: 6px 14px;
+  font-weight: bold;
+  box-shadow: {{power-shadow}};
+}
+
+#custom-power:hover {
+  background: {{power-hover-bg}};
+  color: {{power-hover-fg}};
+  border-color: {{power-hover-border}};
+  box-shadow: {{power-hover-shadow}};
+  transition: all 0.2s ease;
+}
+
+/* Hover effects for interactive modules */
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#battery:hover,
+#clock:hover,
+#tray:hover,
+#idle_inhibitor:hover {
+  background: {{module-hover-bg}};
+  border-color: {{module-hover-border}};
+  box-shadow: {{module-hover-shadow}};
+  transition: all 0.2s ease;
+}
