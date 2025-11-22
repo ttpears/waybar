@@ -1,6 +1,6 @@
 /* CYBERPUNK/MATRIX THEME */
 * {
-  font-family: "Noto Sans", sans-serif;
+  font-family: "Iosevka Term Nerd Font", "Noto Sans", sans-serif;
   font-size: 13px;
   border: none;
 }
@@ -13,10 +13,18 @@ window#waybar {
 
 /* Module styling with gaps and borders */
 #workspaces,
+#mode,
+#scratchpad,
+#window,
 #cpu,
 #memory,
+#temperature,
+#network,
+#bluetooth,
 #pulseaudio,
+#backlight,
 #battery,
+#idle_inhibitor,
 #clock,
 #tray,
 #mpris,
@@ -30,6 +38,17 @@ window#waybar {
   box-shadow: 0 0 12px rgba(0, 255, 0, 0.3);
 }
 
+/* Separator styling */
+#custom-sep {
+  color: rgba(0, 255, 0, 0.3);
+  margin: 0 2px;
+  padding: 0 4px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Workspaces */
 #workspaces button {
   color: #00ff00;
   padding: 4px 12px;
@@ -37,34 +56,58 @@ window#waybar {
   border-radius: 6px;
   transition: all 0.3s ease;
 }
-/* Workspace visible on a monitor but not focused */
+
 #workspaces button.visible {
   background: rgba(0, 255, 255, 0.3);
   color: #00ffff;
   font-weight: normal;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
 }
-/* Workspace currently focused */
+
 #workspaces button.focused {
   background: #00ff00;
   color: #000000;
   font-weight: bold;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
 }
+
 #workspaces button:hover {
   background: rgba(0, 255, 0, 0.4);
   color: #00ff00;
 }
 
-/* CPU color coding based on usage */
+/* Sway mode indicator */
+#mode {
+  background: rgba(255, 255, 0, 0.2);
+  color: #ffff00;
+  border-color: rgba(255, 255, 0, 0.6);
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+}
+
+/* Scratchpad indicator */
+#scratchpad {
+  color: #ff00ff;
+  border-color: rgba(255, 0, 255, 0.5);
+}
+
+/* Window title */
+#window {
+  color: #00ffff;
+  font-style: italic;
+}
+
+/* CPU */
 #cpu {
   color: #00ff00;
 }
+
 #cpu.warning {
   color: #ffff00;
   background: rgba(255, 255, 0, 0.15);
   box-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
 }
+
 #cpu.critical {
   color: #ff0000;
   background: rgba(255, 0, 0, 0.15);
@@ -72,15 +115,17 @@ window#waybar {
   box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
 }
 
-/* Memory color indicator */
+/* Memory */
 #memory {
   color: #00ffff;
 }
+
 #memory.warning {
   color: #ffff00;
   background: rgba(255, 255, 0, 0.15);
   box-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
 }
+
 #memory.critical {
   color: #ff0000;
   background: rgba(255, 0, 0, 0.15);
@@ -88,28 +133,72 @@ window#waybar {
   box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
 }
 
-/* Pulseaudio volume levels */
+/* Temperature */
+#temperature {
+  color: #00ff00;
+}
+
+#temperature.critical {
+  color: #ff0000;
+  background: rgba(255, 0, 0, 0.15);
+  font-weight: bold;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.5);
+}
+
+/* Network */
+#network {
+  color: #00ffff;
+}
+
+#network.disconnected {
+  color: #ff0000;
+  background: rgba(255, 0, 0, 0.15);
+}
+
+#network.linked {
+  color: #ffff00;
+}
+
+/* Bluetooth */
+#bluetooth {
+  color: #00bbff;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+  color: #666666;
+}
+
+#bluetooth.connected {
+  color: #00ffff;
+  font-weight: bold;
+}
+
+/* Pulseaudio */
 #pulseaudio {
   color: #00ffff;
 }
+
 #pulseaudio.muted {
   color: #ff0000;
   background: rgba(255, 0, 0, 0.15);
 }
 
-/* Hover effects for interactive modules */
-#cpu:hover, #memory:hover, #pulseaudio:hover, #battery:hover, #clock:hover, #tray:hover {
-  background: rgba(0, 40, 0, 0.9);
-  border-color: rgba(0, 255, 0, 0.8);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-  transition: all 0.2s ease;
+/* Backlight */
+#backlight {
+  color: #ffff00;
 }
 
-/* Battery state styling */
+/* Battery */
+#battery {
+  color: #00ff00;
+}
+
 #battery.critical {
   background: #ff0000;
   color: #000000;
   box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+  animation: blink 1s linear infinite;
 }
 
 #battery.warning {
@@ -127,11 +216,56 @@ window#waybar {
   color: #000000;
 }
 
-#custom-dock {
-  min-width: 100px;
+@keyframes blink {
+  0%, 50% { opacity: 1.0; }
+  51%, 100% { opacity: 0.5; }
 }
 
-/* KeePass button styling */
+/* Idle inhibitor */
+#idle_inhibitor {
+  color: #00ff00;
+}
+
+#idle_inhibitor.activated {
+  color: #ffff00;
+  background: rgba(255, 255, 0, 0.2);
+  border-color: rgba(255, 255, 0, 0.6);
+  box-shadow: 0 0 12px rgba(255, 255, 0, 0.4);
+}
+
+/* Clock */
+#clock {
+  color: #00ff00;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+/* Tray */
+#tray {
+  padding: 6px 10px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: rgba(255, 255, 0, 0.3);
+  border-color: #ffff00;
+  box-shadow: 0 0 10px rgba(255, 255, 0, 0.4);
+}
+
+/* MPRIS player */
+#mpris {
+  color: #00ffff;
+}
+
+#mpris.paused {
+  color: #ffff00;
+}
+
+/* KeePass button */
 #custom-keepass {
   background: rgba(0, 255, 255, 0.4);
   color: #00ffff;
@@ -141,6 +275,7 @@ window#waybar {
   font-weight: bold;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
 }
+
 #custom-keepass:hover {
   background: rgba(0, 255, 255, 0.7);
   color: #000000;
@@ -149,7 +284,7 @@ window#waybar {
   transition: all 0.2s ease;
 }
 
-/* Power button accent styling */
+/* Power button */
 #custom-power {
   background: rgba(255, 0, 0, 0.4);
   color: #ff0000;
@@ -159,6 +294,7 @@ window#waybar {
   font-weight: bold;
   box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
 }
+
 #custom-power:hover {
   background: rgba(255, 0, 0, 0.7);
   color: #ffffff;
@@ -167,28 +303,20 @@ window#waybar {
   transition: all 0.2s ease;
 }
 
-/* Tray styling */
-#tray {
-  padding: 6px 10px;
-}
-#tray > .passive {
-  -gtk-icon-effect: dim;
-}
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-  background: rgba(255, 255, 0, 0.3);
-  border-color: #ffff00;
-  box-shadow: 0 0 10px rgba(255, 255, 0, 0.4);
-}
-
-/* MPRIS player styling */
-#mpris {
-  color: #00ffff;
-}
-
-/* Clock styling */
-#clock {
-  color: #00ff00;
-  font-weight: bold;
-  text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+/* Hover effects for interactive modules */
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#battery:hover,
+#clock:hover,
+#tray:hover,
+#idle_inhibitor:hover {
+  background: rgba(0, 40, 0, 0.9);
+  border-color: rgba(0, 255, 0, 0.8);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  transition: all 0.2s ease;
 }

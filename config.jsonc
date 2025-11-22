@@ -9,7 +9,11 @@
   "passthrough": false,
   "fixed-center": true,
   "modules-left": [
-    "sway/workspaces"
+    "sway/workspaces",
+    "sway/mode",
+    "sway/scratchpad",
+    "custom/sep",
+    "sway/window"
   ],
   "modules-center": [
     "mpris"
@@ -17,32 +21,189 @@
   "modules-right": [
     "cpu",
     "memory",
+    "temperature",
+    "custom/sep",
+    "network",
+    "bluetooth",
+    "custom/sep",
     "pulseaudio",
+    "custom/sep",
+    "backlight",
+    "custom/sep",
     "battery",
+    "custom/sep",
+    "idle_inhibitor",
     "clock",
-    "clock#simpleclock",
     "tray",
+    "custom/sep",
     "custom/keepass",
     "custom/power"
   ],
+  "sway/workspaces": {
+    "format": "{name}",
+    "disable-scroll": false,
+    "all-outputs": false,
+    "on-click": "activate"
+  },
+  "sway/mode": {
+    "format": "<span style=\"italic\">  {}</span>",
+    "tooltip": false
+  },
+  "sway/scratchpad": {
+    "format": "{icon} {count}",
+    "show-empty": false,
+    "format-icons": ["", ""],
+    "tooltip": true,
+    "tooltip-format": "{app}: {title}"
+  },
+  "sway/window": {
+    "format": "{}",
+    "max-length": 50,
+    "tooltip": true,
+    "rewrite": {
+      "(.*) — Mozilla Firefox": "🌎 $1",
+      "(.*) - Google Chrome": "🌎 $1",
+      "(.*) - Visual Studio Code": " $1"
+    }
+  },
   "mpris": {
     "player": "chromium",
     "dynamic-order": [
       "artist",
       "title"
     ],
-    "format": "{player_icon}",
-    "format-paused": "{status_icon} ",
+    "format": "{player_icon} {dynamic}",
+    "format-paused": "{status_icon} {dynamic}",
     "format-stopped": "",
     "on-click": "playerctl play-pause",
     "on-click-right": "playerctl next",
     "on-click-middle": "playerctl stop",
+    "on-scroll-up": "playerctl volume 0.05+",
+    "on-scroll-down": "playerctl volume 0.05-",
+    "max-length": 50,
     "status-icons": {
-      "paused": ""
+      "paused": ""
     },
     "player-icons": {
-      "default": ""
+      "default": ""
     }
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    },
+    "tooltip": true,
+    "tooltip-format-activated": "Idle inhibitor: ON",
+    "tooltip-format-deactivated": "Idle inhibitor: OFF"
+  },
+  "tray": {
+    "icon-size": 18,
+    "show-passive-items": true,
+    "spacing": 10
+  },
+  "clock": {
+    "format": " {:%H:%M}   {:%a %d %b}",
+    "on-click": "~/.config/waybar/scripts/open-outlook.sh",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'>{}</span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
+  },
+  "cpu": {
+    "format": " {usage}%",
+    "tooltip": true,
+    "interval": 2,
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
+    "on-click": "wezterm start --always-new-process htop"
+  },
+  "memory": {
+    "format": " {used:0.1f}Gi",
+    "tooltip": true,
+    "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB ({percentage}%)\nSwap: {swapUsed:0.1f}GiB / {swapTotal:0.1f}GiB",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    },
+    "on-click": "wezterm start --always-new-process htop"
+  },
+  "temperature": {
+    "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    "format": "{icon} {temperatureC}°C",
+    "format-icons": ["", "", ""],
+    "tooltip": true,
+    "on-click": "wezterm start --always-new-process sensors"
+  },
+  "network": {
+    "format-wifi": " {signalStrength}%",
+    "format-ethernet": "",
+    "format-linked": " (No IP)",
+    "format-disconnected": "⚠",
+    "tooltip-format": "{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}\nStrength: {signalStrength}%\nFrequency: {frequency}MHz",
+    "tooltip-format-wifi": " {essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}\nFrequency: {frequency}MHz",
+    "tooltip-format-ethernet": " {ifname}: {ipaddr}/{cidr}\nGateway: {gwaddr}",
+    "tooltip-format-disconnected": "Disconnected",
+    "on-click": "wezterm start --always-new-process nmtui"
+  },
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "",
+    "format-off": "",
+    "format-connected": " {device_alias}",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+    "on-click": "blueman-manager"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": " muted",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "tooltip-format": "{desc}\nVolume: {volume}%",
+    "on-click": "pavucontrol",
+    "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +2%",
+    "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -2%"
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{icon} {percent}%",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "tooltip": true,
+    "tooltip-format": "Brightness: {percent}%",
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-"
   },
   "battery": {
     "bat": "BAT0",
@@ -73,62 +234,6 @@
     "tooltip-format": "Battery: {capacity}%\nTime: {time}\nPower: {power}W\nCycles: {cycles}",
     "on-click": "gnome-power-statistics",
     "max-length": 25
-  },
-  "hyprland/workspaces": {
-    "on-click": "activate",
-    "format": "{id}",
-    "all-outputs": true,
-    "disable-scroll": false,
-    "active-only": false
-  },
-  "hyprland/window": {
-    "format": "{title}"
-  },
-  "tray": {
-    "show-passive-items": true,
-    "spacing": 10
-  },
-  "clock#simpleclock": {
-    "tooltip": false,
-    "format": " {:%H:%M}"
-  },
-  "clock": {
-    "format": " {:L%a %d %b}",
-    "on-click": "~/.config/waybar/scripts/open-outlook.sh",
-    "calendar": {
-      "format": {
-        "days": "<span weight='normal'>{}</span>",
-        "months": "<span color='#cdd6f4'><b>{}</b></span>",
-        "today": "<span color='#f38ba8' weight='700'><u>{}</u></span>",
-        "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
-        "weeks": "<span color='#a6e3a1'><b>W{}</b></span>"
-      },
-      "mode": "month",
-      "mode-mon-col": 1,
-      "on-scroll": 1
-    },
-    "tooltip-format": "<span color='#cdd6f4' font='Lexend 16'><tt><small>{calendar}</small></tt></span>"
-  },
-  "cpu": {
-    "format": " {usage}%",
-    "tooltip": true,
-    "interval": 1
-  },
-  "memory": {
-    "format": " {used:0.1f}Gi"
-  },
-  "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": "  muted",
-    "format-icons": {
-      "headphone": "",
-      "default": [
-        " ",
-        " ",
-        " "
-      ]
-    },
-    "on-click": "pavucontrol"
   },
   "custom/sep": {
     "format": "|",

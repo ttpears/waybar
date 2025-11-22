@@ -1,21 +1,30 @@
+/* NORDIC THEME */
 * {
-  font-family: "Noto Sans", sans-serif;
+  font-family: "Iosevka Term Nerd Font", "Noto Sans", sans-serif;
   font-size: 13px;
   border: none;
 }
 
 window#waybar {
-  background: rgba(46, 52, 64, 0.85);
+  background: rgba(46, 52, 64, 0.9);
   color: #eceff4;
   border-radius: 0;
 }
 
 /* Module styling with gaps and borders */
 #workspaces,
+#mode,
+#scratchpad,
+#window,
 #cpu,
 #memory,
+#temperature,
+#network,
+#bluetooth,
 #pulseaudio,
+#backlight,
 #battery,
+#idle_inhibitor,
 #clock,
 #tray,
 #mpris,
@@ -29,6 +38,17 @@ window#waybar {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Separator styling */
+#custom-sep {
+  color: rgba(136, 192, 208, 0.3);
+  margin: 0 2px;
+  padding: 0 4px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Workspaces */
 #workspaces button {
   color: #88c0d0;
   padding: 4px 12px;
@@ -36,71 +56,141 @@ window#waybar {
   border-radius: 6px;
   transition: all 0.3s ease;
 }
-/* Workspace visible on a monitor but not focused */
+
 #workspaces button.visible {
   background: #5e81ac;
   color: #eceff4;
   font-weight: normal;
 }
-/* Workspace currently focused */
+
 #workspaces button.focused {
   background: #88c0d0;
   color: #2e3440;
   font-weight: bold;
 }
+
 #workspaces button:hover {
   background: #5e81ac;
   color: #eceff4;
 }
 
-/* CPU color coding based on usage */
+/* Sway mode indicator */
+#mode {
+  background: rgba(235, 203, 139, 0.3);
+  color: #ebcb8b;
+  border-color: rgba(235, 203, 139, 0.6);
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(235, 203, 139, 0.3);
+}
+
+/* Scratchpad indicator */
+#scratchpad {
+  color: #b48ead;
+  border-color: rgba(180, 142, 173, 0.5);
+}
+
+/* Window title */
+#window {
+  color: #88c0d0;
+  font-style: italic;
+}
+
+/* CPU */
 #cpu {
   color: #a3be8c;
 }
+
 #cpu.warning {
   color: #ebcb8b;
   background: rgba(235, 203, 139, 0.15);
 }
+
 #cpu.critical {
   color: #bf616a;
   background: rgba(191, 97, 106, 0.15);
   font-weight: bold;
 }
 
-/* Memory color indicator */
+/* Memory */
 #memory {
   color: #88c0d0;
 }
+
 #memory.warning {
   color: #ebcb8b;
   background: rgba(235, 203, 139, 0.15);
 }
+
 #memory.critical {
   color: #bf616a;
   background: rgba(191, 97, 106, 0.15);
   font-weight: bold;
 }
 
-/* Pulseaudio volume levels */
+/* Temperature */
+#temperature {
+  color: #a3be8c;
+}
+
+#temperature.critical {
+  color: #bf616a;
+  background: rgba(191, 97, 106, 0.15);
+  font-weight: bold;
+}
+
+/* Network */
+#network {
+  color: #88c0d0;
+}
+
+#network.disconnected {
+  color: #bf616a;
+  background: rgba(191, 97, 106, 0.15);
+}
+
+#network.linked {
+  color: #ebcb8b;
+}
+
+/* Bluetooth */
+#bluetooth {
+  color: #81a1c1;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+  color: #4c566a;
+}
+
+#bluetooth.connected {
+  color: #88c0d0;
+  font-weight: bold;
+}
+
+/* Pulseaudio */
 #pulseaudio {
   color: #88c0d0;
 }
+
 #pulseaudio.muted {
   color: #bf616a;
   background: rgba(191, 97, 106, 0.15);
 }
 
-/* Hover effects for interactive modules */
-#cpu:hover, #memory:hover, #pulseaudio:hover, #battery:hover, #clock:hover, #tray:hover {
-  background: rgba(76, 86, 106, 0.9);
-  border-color: rgba(136, 192, 208, 0.4);
-  transition: all 0.2s ease;
+/* Backlight */
+#backlight {
+  color: #ebcb8b;
 }
 
-/* Battery state styling */
+/* Battery */
+#battery {
+  color: #a3be8c;
+}
+
 #battery.critical {
   background: #bf616a;
   color: #eceff4;
+  animation: blink 1s linear infinite;
 }
 
 #battery.warning {
@@ -118,11 +208,54 @@ window#waybar {
   color: #2e3440;
 }
 
-#custom-dock {
-  min-width: 100px;
+@keyframes blink {
+  0%, 50% { opacity: 1.0; }
+  51%, 100% { opacity: 0.5; }
 }
 
-/* KeePass button styling */
+/* Idle inhibitor */
+#idle_inhibitor {
+  color: #a3be8c;
+}
+
+#idle_inhibitor.activated {
+  color: #ebcb8b;
+  background: rgba(235, 203, 139, 0.3);
+  border-color: rgba(235, 203, 139, 0.6);
+  box-shadow: 0 0 10px rgba(235, 203, 139, 0.3);
+}
+
+/* Clock */
+#clock {
+  color: #8fbcbb;
+  font-weight: bold;
+}
+
+/* Tray */
+#tray {
+  padding: 6px 10px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: rgba(235, 203, 139, 0.2);
+  border-color: #ebcb8b;
+}
+
+/* MPRIS player */
+#mpris {
+  color: #b48ead;
+}
+
+#mpris.paused {
+  color: #ebcb8b;
+}
+
+/* KeePass button */
 #custom-keepass {
   background: rgba(180, 142, 173, 0.3);
   color: #b48ead;
@@ -131,6 +264,7 @@ window#waybar {
   padding: 6px 14px;
   font-weight: bold;
 }
+
 #custom-keepass:hover {
   background: rgba(180, 142, 173, 0.6);
   color: #eceff4;
@@ -138,7 +272,7 @@ window#waybar {
   transition: all 0.2s ease;
 }
 
-/* Power button accent styling */
+/* Power button */
 #custom-power {
   background: rgba(191, 97, 106, 0.3);
   color: #bf616a;
@@ -147,6 +281,7 @@ window#waybar {
   padding: 6px 14px;
   font-weight: bold;
 }
+
 #custom-power:hover {
   background: rgba(191, 97, 106, 0.6);
   color: #eceff4;
@@ -154,21 +289,19 @@ window#waybar {
   transition: all 0.2s ease;
 }
 
-/* Tray styling */
-#tray {
-  padding: 6px 10px;
+/* Hover effects for interactive modules */
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#network:hover,
+#bluetooth:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#battery:hover,
+#clock:hover,
+#tray:hover,
+#idle_inhibitor:hover {
+  background: rgba(76, 86, 106, 0.9);
+  border-color: rgba(136, 192, 208, 0.4);
+  transition: all 0.2s ease;
 }
-#tray > .passive {
-  -gtk-icon-effect: dim;
-}
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-  background: rgba(235, 203, 139, 0.2);
-  border-color: #ebcb8b;
-}
-
-/* MPRIS player styling */
-#mpris {
-  color: #b48ead;
-}
-
