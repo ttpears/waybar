@@ -27,15 +27,25 @@ All themes use transparency (0.8-0.9 alpha) and neon glow effects for depth.
 ### Installation
 
 ```bash
-# Clone or copy to your Waybar config directory
+# Clone to your Waybar config directory
+git clone https://github.com/ttpears/waybar ~/.config/waybar
 cd ~/.config/waybar
 
-# Compile all themes
-./compile-themes.sh
+# Run the setup wizard (checks dependencies, compiles themes, sets default)
+./setup.sh
 
-# Switch to a theme
+# Or do it manually:
+./compile-themes.sh
 ./switch-theme.sh nordic
 ```
+
+The setup wizard will:
+- ✓ Check all dependencies
+- ✓ Validate configuration files
+- ✓ Compile themes if needed
+- ✓ Set a default theme
+- ✓ Detect unified Sway integration
+- ✓ Show you next steps
 
 ### Usage
 
@@ -153,9 +163,16 @@ Several modules support state-based styling:
 
 ## Requirements
 
+### Required
 - Waybar (with Sway support)
-- Nerd Font (Iosevka Term recommended, or any Nerd Font)
 - Bash (for compilation and theme switching)
+
+### Recommended
+- Nerd Font (Iosevka Term recommended, or any Nerd Font)
+- One of: wofi, rofi, or fzf (for interactive menu)
+- Sway window manager (for full integration)
+
+**Tip:** Run `./setup.sh check` to validate your system
 
 ## Sway Integration
 
