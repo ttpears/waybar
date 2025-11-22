@@ -66,19 +66,137 @@ ask_yes_no() {
 }
 
 # ========================================
+# OS Detection
+# ========================================
+
+detect_os() {
+    if [[ -f /etc/os-release ]]; then
+        . /etc/os-release
+        echo "$ID"
+    elif [[ -f /etc/arch-release ]]; then
+        echo "arch"
+    else
+        echo "unknown"
+    fi
+}
+
+get_install_cmd() {
+    local package="$1"
+    local os=$(detect_os)
+
+    case "$os" in
+        arch|manjaro|endeavouros)
+            echo "sudo pacman -S $package"
+            ;;
+        ubuntu|debian|pop|linuxmint|elementary)
+            echo "sudo apt install $package"
+            ;;
+        fedora)
+            echo "sudo dnf install $package"
+            ;;
+        opensuse*|suse)
+            echo "sudo zypper install $package"
+            ;;
+        void)
+            echo "sudo xbps-install -S $package"
+            ;;
+        gentoo)
+            echo "sudo emerge $package"
+            ;;
+        *)
+            echo "# Install $package using your package manager"
+            ;;
+    esac
+}
+
+get_os_name() {
+    local os=$(detect_os)
+    case "$os" in
+        arch) echo "Arch Linux" ;;
+        manjaro) echo "Manjaro" ;;
+        ubuntu) echo "Ubuntu" ;;
+        debian) echo "Debian" ;;
+        fedora) echo "Fedora" ;;
+        pop) echo "Pop!_OS" ;;
+        opensuse*) echo "openSUSE" ;;
+        void) echo "Void Linux" ;;
+        gentoo) echo "Gentoo" ;;
+        *) echo "Unknown" ;;
+    esac
+}
+
+# ========================================
 # Validation Functions
 # ========================================
+
+check_fonts() {
+    print_header "Checking Fonts"
+
+    local fonts_ok=false
+
+    # Check if fc-list is available
+    if ! command -v fc-list &> /dev/null; then
+        print_warning "fontconfig not installed - cannot check fonts"
+        print_info "    Install fontconfig: $(get_install_cmd fontconfig)"
+        return 0
+    fi
+
+    # Check for common Nerd Font installations
+    if fc-list | grep -i "nerd font" > /dev/null 2>&1; then
+        print_success "Nerd Font detected"
+
+        # Show which ones
+        local nerd_fonts=$(fc-list | grep -i "nerd font" | cut -d: -f2 | cut -d, -f1 | sort -u | head -5)
+        while IFS= read -r font; do
+            [[ -n "$font" ]] && print_info "    → $font"
+        done <<< "$nerd_fonts"
+        fonts_ok=true
+    else
+        print_warning "No Nerd Fonts detected"
+        print_info "    Waybar will work, but icons may not display correctly"
+
+        local os=$(detect_os)
+        echo ""
+        case "$os" in
+            arch|manjaro|endeavouros)
+                print_info "Install Nerd Fonts on $(get_os_name):"
+                echo -e "    ${GREEN}sudo pacman -S ttf-iosevka-nerd${NC}"
+                echo -e "    ${GREEN}# Or from AUR: yay -S nerd-fonts-iosevka${NC}"
+                ;;
+            ubuntu|debian|pop|linuxmint)
+                print_info "Install Nerd Fonts on $(get_os_name):"
+                echo -e "    ${GREEN}mkdir -p ~/.local/share/fonts && cd ~/.local/share/fonts${NC}"
+                echo -e "    ${GREEN}wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/Iosevka.zip${NC}"
+                echo -e "    ${GREEN}unzip Iosevka.zip && rm Iosevka.zip && fc-cache -fv${NC}"
+                ;;
+            fedora)
+                print_info "Install Nerd Fonts on $(get_os_name):"
+                echo -e "    ${GREEN}sudo dnf copr enable che/nerd-fonts${NC}"
+                echo -e "    ${GREEN}sudo dnf install iosevka-nerd-fonts${NC}"
+                ;;
+            *)
+                print_info "Install Nerd Fonts manually:"
+                echo -e "    Visit: ${BLUE}https://www.nerdfonts.com/font-downloads${NC}"
+                ;;
+        esac
+        echo ""
+    fi
+
+    return 0
+}
 
 check_dependencies() {
     print_header "Checking Dependencies"
 
     local all_ok=true
+    local missing_packages=()
 
     # Required
     if command -v waybar &> /dev/null; then
         print_success "Waybar installed"
     else
         print_error "Waybar not found (REQUIRED)"
+        missing_packages+=("waybar")
         all_ok=false
     fi
 
@@ -87,6 +205,7 @@ check_dependencies() {
         print_success "Bash available"
     else
         print_error "Bash not found (REQUIRED)"
+        missing_packages+=("bash")
         all_ok=false
     fi
 
@@ -106,8 +225,9 @@ check_dependencies() {
     fi
 
     if ! $menu_found; then
-        print_warning "No interactive menu program found (install wofi, rofi, or fzf)"
-        print_info "    Theme switching will work, but interactive menu won't be available"
+        print_warning "No interactive menu program found"
+        print_info "    Install one of: wofi, rofi, or fzf for interactive theme switching"
+        missing_packages+=("wofi")
     fi
 
     # Sway integration check
@@ -115,6 +235,20 @@ check_dependencies() {
         print_success "Sway installed"
     else
         print_warning "Sway not found (optional - needed for Sway integration)"
+    fi
+
+    # Show summary if packages are missing
+    if [[ ${#missing_packages[@]} -gt 0 ]]; then
+        echo ""
+        print_warning "Missing packages detected"
+        print_info "Detected OS: $(get_os_name)"
+        echo ""
+        print_info "Install commands:"
+
+        for pkg in "${missing_packages[@]}"; do
+            echo -e "    ${GREEN}$(get_install_cmd "$pkg")${NC}"
+        done
+        echo ""
     fi
 
     $all_ok
@@ -173,6 +307,7 @@ check_compiled_themes() {
 
         # List them
         for css_file in "$WAYBAR_DIR"/style-*.css; do
+            [[ -f "$css_file" ]] || continue
             local theme_name=$(basename "$css_file" .css | sed 's/style-//')
             print_info "    → $theme_name"
         done
@@ -189,7 +324,7 @@ check_current_theme() {
         local theme_name=$(basename "$target" .css | sed 's/style-//')
         print_success "Active theme: $theme_name"
 
-        if [[ -f "$WAYBAR_DIR/$target" ]]; then
+        if [[ -f "$WAYBAR_DIR/$target" ]] || [[ -f "$target" ]]; then
             print_success "Theme file exists and is linked"
         else
             print_error "Theme file missing: $target"
@@ -213,7 +348,7 @@ check_sway_integration() {
 
     # Check if Sway config references our theme switcher
     if [[ -f "$SWAY_DIR/config" ]]; then
-        if grep -q "waybar.*switch-theme" "$SWAY_DIR/config" 2>/dev/null; then
+        if grep -q "waybar.*switch-theme\|switch-theme.*waybar" "$SWAY_DIR/config" 2>/dev/null; then
             print_success "Theme switcher keybinding found in Sway config"
         else
             print_warning "No theme switcher keybinding found in Sway config"
@@ -221,7 +356,7 @@ check_sway_integration() {
         fi
 
         # Check for unified setup
-        if [[ -f "$SWAY_DIR/switch-theme.sh" ]]; then
+        if [[ -f "$SWAY_DIR/switch-theme.sh" ]] || [[ -f "$SWAY_DIR/switch-theme-gui.sh" ]]; then
             print_success "Unified theme switcher detected in ~/.config/sway"
 
             if [[ -d "$SWAY_DIR/themes" ]]; then
@@ -267,7 +402,7 @@ set_default_theme() {
     local default_theme="nordic"
 
     # Check if any compiled themes exist
-    local available_themes=($(find "$WAYBAR_DIR" -name "style-*.css" -type f -exec basename {} .css \; | sed 's/style-//'))
+    local available_themes=($(find "$WAYBAR_DIR" -name "style-*.css" -type f -exec basename {} .css \; 2>/dev/null | sed 's/style-//'))
 
     if [[ ${#available_themes[@]} -eq 0 ]]; then
         print_error "No compiled themes available"
@@ -293,29 +428,29 @@ set_default_theme() {
 show_next_steps() {
     print_header "Next Steps"
 
-    echo "Your Waybar theme system is ready! Here's what you can do:"
-    echo ""
-    echo "1. Switch themes interactively:"
-    echo "   ${GREEN}./switch-theme.sh menu${NC}"
-    echo ""
-    echo "2. Switch to a specific theme:"
-    echo "   ${GREEN}./switch-theme.sh nordic${NC}"
-    echo ""
-    echo "3. Cycle to next theme:"
-    echo "   ${GREEN}./switch-theme.sh next${NC}"
-    echo ""
-    echo "4. Add Sway keybindings (recommended):"
-    echo "   See ${BLUE}sway-integration.conf${NC} for examples"
-    echo ""
-    echo "5. Create new themes:"
-    echo "   Copy a theme from ${BLUE}themes/${NC} and edit colors"
-    echo "   Run ${GREEN}./compile-themes.sh${NC} to generate CSS"
-    echo ""
+    echo -e "Your Waybar theme system is ready! Here's what you can do:"
+    echo -e ""
+    echo -e "1. Switch themes interactively:"
+    echo -e "   ${GREEN}./switch-theme.sh menu${NC}"
+    echo -e ""
+    echo -e "2. Switch to a specific theme:"
+    echo -e "   ${GREEN}./switch-theme.sh nordic${NC}"
+    echo -e ""
+    echo -e "3. Cycle to next theme:"
+    echo -e "   ${GREEN}./switch-theme.sh next${NC}"
+    echo -e ""
+    echo -e "4. Add Sway keybindings (recommended):"
+    echo -e "   See ${BLUE}sway-integration.conf${NC} for examples"
+    echo -e ""
+    echo -e "5. Create new themes:"
+    echo -e "   Copy a theme from ${BLUE}themes/${NC} and edit colors"
+    echo -e "   Run ${GREEN}./compile-themes.sh${NC} to generate CSS"
+    echo -e ""
 
     if command -v swaymsg &> /dev/null; then
-        echo "6. Reload Waybar to see changes:"
-        echo "   ${GREEN}pkill waybar && waybar &${NC}"
-        echo ""
+        echo -e "6. Reload Waybar to see changes:"
+        echo -e "   ${GREEN}pkill waybar && waybar &${NC}"
+        echo -e ""
     fi
 }
 
@@ -327,6 +462,7 @@ run_checks() {
     local all_ok=true
 
     check_dependencies || all_ok=false
+    check_fonts
     check_config || all_ok=false
 
     if ! check_compiled_themes; then
@@ -407,6 +543,7 @@ main() {
             ;;
         validate)
             check_dependencies
+            check_fonts
             check_config
             ;;
         help|-h|--help)
