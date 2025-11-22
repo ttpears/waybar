@@ -1,0 +1,179 @@
+/* CATPPUCCIN MOCHA THEME */
+* {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+  border: none;
+}
+
+window#waybar {
+  background: rgba(30, 30, 46, 0.85);
+  color: #cdd6f4;
+  border-radius: 0;
+}
+
+/* Module styling with gaps and borders */
+#workspaces,
+#cpu,
+#memory,
+#pulseaudio,
+#battery,
+#clock,
+#tray,
+#mpris,
+#custom-power,
+#custom-keepass {
+  margin: 4px 6px;
+  padding: 6px 12px;
+  background: rgba(49, 50, 68, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(137, 180, 250, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+#workspaces button {
+  color: #89b4fa;
+  padding: 4px 12px;
+  margin: 2px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+/* Workspace visible on a monitor but not focused */
+#workspaces button.visible {
+  background: rgba(137, 180, 250, 0.4);
+  color: #cdd6f4;
+  font-weight: normal;
+}
+/* Workspace currently focused */
+#workspaces button.focused {
+  background: #89b4fa;
+  color: #1e1e2e;
+  font-weight: bold;
+}
+#workspaces button:hover {
+  background: rgba(137, 180, 250, 0.6);
+  color: #cdd6f4;
+}
+
+/* CPU color coding based on usage */
+#cpu {
+  color: #a6e3a1;
+}
+#cpu.warning {
+  color: #f9e2af;
+  background: rgba(249, 226, 175, 0.15);
+}
+#cpu.critical {
+  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.15);
+  font-weight: bold;
+}
+
+/* Memory color indicator */
+#memory {
+  color: #89dceb;
+}
+#memory.warning {
+  color: #f9e2af;
+  background: rgba(249, 226, 175, 0.15);
+}
+#memory.critical {
+  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.15);
+  font-weight: bold;
+}
+
+/* Pulseaudio volume levels */
+#pulseaudio {
+  color: #89dceb;
+}
+#pulseaudio.muted {
+  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.15);
+}
+
+/* Hover effects for interactive modules */
+#cpu:hover, #memory:hover, #pulseaudio:hover, #battery:hover, #clock:hover, #tray:hover {
+  background: rgba(69, 71, 90, 0.9);
+  border-color: rgba(137, 180, 250, 0.5);
+  transition: all 0.2s ease;
+}
+
+/* Battery state styling */
+#battery.critical {
+  background: #f38ba8;
+  color: #1e1e2e;
+}
+
+#battery.warning {
+  background: #fab387;
+  color: #1e1e2e;
+}
+
+#battery.good {
+  background: #a6e3a1;
+  color: #1e1e2e;
+}
+
+#battery.charging {
+  background: #89dceb;
+  color: #1e1e2e;
+}
+
+#custom-dock {
+  min-width: 100px;
+}
+
+/* KeePass button styling */
+#custom-keepass {
+  background: rgba(203, 166, 247, 0.3);
+  color: #cba6f7;
+  border-color: rgba(203, 166, 247, 0.5);
+  font-size: 16px;
+  padding: 6px 14px;
+  font-weight: bold;
+}
+#custom-keepass:hover {
+  background: rgba(203, 166, 247, 0.6);
+  color: #cdd6f4;
+  border-color: #cba6f7;
+  transition: all 0.2s ease;
+}
+
+/* Power button accent styling */
+#custom-power {
+  background: rgba(243, 139, 168, 0.3);
+  color: #f38ba8;
+  border-color: rgba(243, 139, 168, 0.5);
+  font-size: 16px;
+  padding: 6px 14px;
+  font-weight: bold;
+}
+#custom-power:hover {
+  background: rgba(243, 139, 168, 0.6);
+  color: #cdd6f4;
+  border-color: #f38ba8;
+  transition: all 0.2s ease;
+}
+
+/* Tray styling */
+#tray {
+  padding: 6px 10px;
+}
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: rgba(249, 226, 175, 0.3);
+  border-color: #f9e2af;
+}
+
+/* MPRIS player styling */
+#mpris {
+  color: #cba6f7;
+}
+
+/* Clock styling */
+#clock {
+  color: #f5c2e7;
+}
