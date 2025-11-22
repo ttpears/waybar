@@ -11,6 +11,11 @@ declare -A THEME_INFO=(
     ["tokyonight"]="Deep blue with electric accents"
     ["catppuccin"]="Rich pastels on mocha base"
     ["cyberpunk"]="Matrix green with neon cyan"
+    ["gruvbox"]="Warm retro browns and oranges"
+    ["dracula"]="Dark purple with vibrant accents"
+    ["onedark"]="Atom's iconic dark theme"
+    ["solarized"]="Classic blue-tinted dark theme"
+    ["monokai"]="Classic code editor palette"
 )
 
 # Get current theme
@@ -147,7 +152,7 @@ case "$1" in
     list|ls)
         list_themes
         ;;
-    nordic|synthwave|tokyonight|catppuccin|cyberpunk)
+    nordic|synthwave|tokyonight|catppuccin|cyberpunk|gruvbox|dracula|onedark|solarized|monokai)
         switch_theme "$1"
         ;;
     "")

@@ -64,7 +64,7 @@ pkill waybar && waybar &
 
 ### Switch Themes
 ```bash
-./switch-theme.sh {nordic|synthwave|tokyonight|catppuccin|cyberpunk}
+./switch-theme.sh {nordic|synthwave|tokyonight|catppuccin|cyberpunk|gruvbox|dracula|onedark|solarized|monokai}
 ```
 
 ### Validate Configuration
@@ -112,5 +112,10 @@ If Waybar logs "Requested height X is less than minimum height Y", update the `h
 - **Tokyo Night**: Blue-black base (#1a1b26), electric blue (#7aa2f7), pastels
 - **Catppuccin Mocha**: Mocha base (#1e1e2e) with lavender, pink, teal, peach accents
 - **Cyberpunk**: Pure black (#000000), matrix green (#00ff00), cyan (#00ffff), red (#ff0000)
+- **Gruvbox**: Warm retro palette - dark brown base (#282828), orange (#d79921), green (#b8bb26), yellow (#fabd2f)
+- **Dracula**: Dark purple base (#282a36), vibrant purple (#bd93f9), cyan (#8be9fd), pink (#ff79c6)
+- **One Dark**: Atom's iconic theme - dark gray base (#282c34), blue (#61afef), green (#98c379), purple (#c678dd)
+- **Solarized**: Classic theme - blue-tinted dark base (#002b36), blue (#268bd2), yellow (#b58900), cyan (#2aa198)
+- **Monokai**: Classic code editor theme - dark gray base (#272822), cyan (#66d9ef), green (#a6e22e), pink (#f92672)
 
 All themes use transparency (0.8-0.9 alpha) for depth and include box-shadow for neon glow effects.

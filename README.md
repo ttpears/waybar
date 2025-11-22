@@ -1,11 +1,11 @@
 # Waybar Configuration for Sway
 
-A highly customizable Waybar setup with a template-based multi-theme system. Features 5 beautiful themes with easy customization and minimal code duplication.
+A highly customizable Waybar setup with a template-based multi-theme system. Features 10 beautiful themes with easy customization and minimal code duplication.
 
 ## Features
 
 - **Template-based theme system** - 50% less code duplication
-- **5 gorgeous themes** - Nordic, Synthwave, Tokyo Night, Catppuccin, Cyberpunk
+- **10 gorgeous themes** - Nordic, Synthwave, Tokyo Night, Catppuccin, Cyberpunk, Gruvbox, Dracula, One Dark, Solarized, Monokai
 - **Multi-monitor support** - Proper workspace highlighting across 1-3 monitors
 - **Easy theme creation** - Add new themes in minutes
 - **Simple compilation** - Pure bash, no dependencies
@@ -19,6 +19,11 @@ A highly customizable Waybar setup with a template-based multi-theme system. Fea
 | **Tokyo Night** | Deep blue-black base with electric blue and pastel accents |
 | **Catppuccin** | Mocha base with lavender, pink, teal, and peach accents |
 | **Cyberpunk** | Pure black with matrix green, cyan, and red |
+| **Gruvbox** | Warm retro palette with dark brown base, orange, green, and yellow |
+| **Dracula** | Dark purple base with vibrant purple, cyan, and pink highlights |
+| **One Dark** | Atom's iconic dark theme with blue, green, and purple accents |
+| **Solarized** | Classic blue-tinted dark theme with balanced color palette |
+| **Monokai** | Classic code editor theme with cyan, green, and pink on dark gray |
 
 All themes use transparency (0.8-0.9 alpha) and neon glow effects for depth.
 
@@ -62,7 +67,9 @@ The theme switcher supports multiple modes:
 ```bash
 ./switch-theme.sh nordic
 ./switch-theme.sh synthwave
-# ... etc
+./switch-theme.sh gruvbox
+./switch-theme.sh dracula
+# ... etc (10 themes available)
 ```
 
 **Cycle through themes:**
@@ -228,5 +235,10 @@ Inspired by:
 - [Nord Theme](https://www.nordtheme.com/)
 - [Tokyo Night](https://github.com/enkia/tokyo-night-vscode-theme)
 - [Catppuccin](https://github.com/catppuccin/catppuccin)
+- [Gruvbox](https://github.com/morhetz/gruvbox)
+- [Dracula](https://draculatheme.com/)
+- [One Dark](https://github.com/atom/one-dark-syntax)
+- [Solarized](https://ethanschoonover.com/solarized/)
+- [Monokai](https://monokai.pro/)
 - Synthwave/Outrun aesthetic
 - Cyberpunk/Matrix aesthetic
