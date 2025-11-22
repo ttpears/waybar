@@ -159,6 +159,8 @@ Several modules support state-based styling:
 
 ## Sway Integration
 
+### Standalone Mode (Waybar themes only)
+
 Add these keybindings to `~/.config/sway/config`:
 
 ```
@@ -170,18 +172,25 @@ bindsym $mod+Shift+t exec ~/.config/waybar/switch-theme.sh menu
 
 # Cycle through themes (Mod+Shift+N)
 bindsym $mod+Shift+n exec ~/.config/waybar/switch-theme.sh next
-
-# Optional: Direct theme shortcuts
-bindsym $mod+Shift+F1 exec ~/.config/waybar/switch-theme.sh nordic
-bindsym $mod+Shift+F2 exec ~/.config/waybar/switch-theme.sh synthwave
-bindsym $mod+Shift+F3 exec ~/.config/waybar/switch-theme.sh tokyonight
-bindsym $mod+Shift+F4 exec ~/.config/waybar/switch-theme.sh catppuccin
-bindsym $mod+Shift+F5 exec ~/.config/waybar/switch-theme.sh cyberpunk
 ```
 
-Then reload Sway: `swaymsg reload`
+See `sway-integration.conf` for more examples.
 
-See `sway-integration.conf` for the complete configuration file.
+### Unified Mode (Sway + Waybar themes together)
+
+For a complete themed desktop where Sway window manager colors match Waybar:
+
+1. Create unified theme switcher in `~/.config/sway/`
+2. Add matching Sway theme files
+3. Use GUI wrapper with wofi for best UX
+
+**See `INTEGRATION.md` for complete unified theme system setup.**
+
+This gives you:
+- Cohesive window borders + statusbar
+- Single command switches everything
+- Desktop notifications
+- State persistence
 
 ## Contributing
 
